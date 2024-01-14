@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 class Task
@@ -70,17 +71,25 @@ Route::get("/", function () {
     return redirect("tasks");
 });
 
-Route::get('/tasks', function () use($tasks) {
+Route::get('/tasks', function () {
     return view("tasks", 
         [
-            "tasks" => $tasks
+            "tasks" => \App\Models\Task::latest()->get()
         ]
     );
 })->name("tasks");
 
+Route::view("/tasks/create", "create_task")->name("tasks.create");
+
 Route::get("/tasks/{id}", function ($id) {
-    return view("task", ["task" => \App\Models\Task::find($id)]);
+    return view("task", [
+        "task" => \App\Models\Task::findOrFail($id)
+    ]);
 })->name("tasks.show");
+
+Route::post("/tasks", function (Request $request) {
+    dd($request->all());
+})->name("tasks.store");
 
 // Route::get("/hello", function () {
 //     return "Hello my friend!";
