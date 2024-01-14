@@ -5,6 +5,12 @@
 <title>Task List App</title>
 <style>@yield("styles")</style>
 <script src="https://cdn.tailwindcss.com"></script>
+
+<style type="text/tailwindcss">
+    .btn {
+        @apply rounded-md px-2 py-1 text-center font-medium shadow-sm ring-1 ring-slate-500 hover:bg-slate-50 text-slate-500
+    }
+</style>
 </head>
 
 <body class="container mx-auto mt-10 mb-10 max-w-lg">
