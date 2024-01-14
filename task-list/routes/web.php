@@ -69,6 +69,12 @@ Route::put("/tasks/{task}", function (Task $task, TaskRequest $request) {
   return redirect()->route("tasks.show", ["task" => $task->id])->with("SUCCESS", "Task edited successfully!");
 })->name("tasks.edit");
 
+Route::delete("tasks/{task}", function (Task $task) {
+  $task->delete();
+
+  return redirect()->route("tasks")->with("SUCCESS", "Task deleted successfully!");
+})->name("tasks.destroy");
+
 // Route::get("/hello", function () {
 //     return "Hello my friend!";
 // })->name("hello");
