@@ -2,8 +2,6 @@
 
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
-use Illuminate\Http\Response;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,27 +41,12 @@ Route::get("/tasks/{task}", function (Task $task) {
 })->name("tasks.show");
 
 Route::post("/tasks", function (TaskRequest $request) {
-    // $taskInput = $taskRequest->validated();
-
-    // $task = new Task;
-    // $task->title = $taskInput["title"];
-    // $task->description = $taskInput["description"];
-    // $task->long_description = $taskInput["long_description"];
-
-    // $task->save();
     $task = Task::create($request->validated());
 
     return redirect()->route("tasks.show", ["task" => $task->id])->with("SUCCESS", "Task created successfully!");
 })->name("tasks.store");
 
 Route::put("/tasks/{task}", function (Task $task, TaskRequest $request) {
-  // $taskInput = $request->validated();
-
-  // $task->title = $taskInput["title"];
-  // $task->description = $taskInput["description"];
-  // $task->long_description = $taskInput["long_description"];
-
-  // $task->save();
   $task->update($request->validated());
 
   return redirect()->route("tasks.show", ["task" => $task->id])->with("SUCCESS", "Task edited successfully!");
@@ -80,22 +63,6 @@ Route::put("tasks/{task}/toggle-complete", function (Task $task) {
 
   return redirect()->back()->with("SUCCESS", "Updated suuccessfully!");
 })->name("tasks.toggle-complete");
-
-// Route::get("/hello", function () {
-//     return "Hello my friend!";
-// })->name("hello");
-
-// Route::get("/hello/{name}", function ($name) {
-//     return "Hello " . $name . "!";
-// });
-
-// Route::get("/hallo", function () {
-//     return redirect("/hello");
-// });
-
-// Route::get("/hallo", function () {
-//     return redirect()->route("hello");
-// });
 
 Route::fallback(function () {
     return "Oups!";
