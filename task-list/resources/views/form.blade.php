@@ -15,7 +15,7 @@
       @isset($task)
         @method("PUT")
       @endisset
-      <div>
+      <div class="mb-4">
         <label for="title">
             title
         </label>
@@ -25,7 +25,7 @@
                 {{ $message }}
             </p>
         @enderror
-        <div>
+        <div class="mt-4">
             <label for="description">
                 Description
             </label>
@@ -36,7 +36,7 @@
                 </p>
             @enderror
         </div>
-        <div>
+        <div class="mt-4">
             <label for="long_description">
                 Long Description
             </label>
@@ -47,8 +47,8 @@
                 </p>
             @enderror
         </div>
-        <div>
-            <button type="submit">
+        <div class="mb-4">
+            <button type="submit" class="btn">
                 @isset($task) 
                     Edit Task
                 @else  
