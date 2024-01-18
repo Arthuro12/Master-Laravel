@@ -17,7 +17,7 @@
                 "popular_last_month" => "Popular Last Month",
                 "popular_last_6months" => "Popular Last 6 Months",
                 "highest_rated_last_month" => "Highest Rated Last Month",
-                "highest_rated_6months" => "Highest rated 6 Last Months"
+                "highest_rated_last_6months" => "Highest rated 6 Last Months"
                 ]
             @endphp
 
@@ -39,7 +39,7 @@
                         </div>
                         <div>
                             <div class="book-rating">
-                                {{ number_format($book->reviews_avg_ratin, 1) }}
+                                {{ number_format($book->reviews_avg_rating, 1) }}
                             </div>
                             <div class="book-review-count">
                                 out of {{ $book->reviews_count }} {{ Str::plural("review") }}
