@@ -5,10 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 class Book extends Model
 {
     use HasFactory;
+
+    protected static function booted() {
+        static::updated(fn(Book $book) => Cache::forget("book:" . $book->id));
+        static::deleted(fn(Book $book) => Cache::forget("book:" . $book->id));
+    } 
+
+    public function scopeWithAvgRating(Builder $query, $from = null, $to = null): Builder {
+        return $query->withAvg(["reviews" => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)], "rating");
+    }
 
     private function dateRangeFilter (Builder $query, $from = null, $to = null){
         if ($from && !$to)  {
@@ -24,8 +34,8 @@ class Book extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function scopeHighestRated(Builder $query, $from = null, $to = null): Builder {
-        return $query->withAvg(["reviews" => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)], "rating")
+    public function scopeHighestRated(Builder $query): Builder {
+        return $query->withAvgRating()
             ->orderBy("reviews_avg_rating", "desc");
     }
 
@@ -45,10 +55,8 @@ class Book extends Model
         return $query->having("reviews_count", ">=", $minimum);
     }
 
-    public function scopePopular(Builder $query, $from = null, $to = null): Builder {
-        return $query->withCount([
-            "reviews" => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)
-            ])
+    public function scopePopular(Builder $query): Builder {
+        return $query->withReviewsCount()
             ->orderBy("reviews_count", "desc");
     } 
 
@@ -66,6 +74,12 @@ class Book extends Model
 
     public function scopeTitle(Builder $query, string $tite): Builder {
         return $query->where("title", "LIKE", "%" . $tite . "%");
+    }
+
+    public function scopeWithReviewsCount(Builder $query, $from = null, $to = null): Builder {
+        return $query->withCount([
+            "reviews" => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)
+        ]);
     }
 
 }
