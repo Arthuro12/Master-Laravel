@@ -21,25 +21,15 @@
           <div>
             <div class="mb-1 font-semibold">Experience</div>
             <div>
-              <label for="experience" class="mb-1 flex items-center">
-                <input type="radio" name="experience" value="" @checked(!request('experience')) />
-                <span class="ml-2">All</span>
-              </label>
-              <label for="experience" class="mb-1 flex items-center">
-                <input type="radio" name="experience" value="entry" @checked('entry' == request('experience')) />
-                <span class="ml-2">Entry</span>
-              </label>
-              <label for="experience" class="mb-1 flex items-center">
-                <input type="radio" name="experience" value="intermediate" @checked('intermediate' == request('experience')) />
-                <span class="ml-2">Intermediate</span>
-              </label>
-              <label for="experience" class="mb-1 flex items-center">
-                <input type="radio" name="experience" value="senior" @checked('senior' == request('experience')) />
-                <span class="ml-2">Senior</span>
-              </label>
+              <x-radio-group name="experience" :options="\App\Models\Job::$experiences" />
             </div>
           </div>
-          <div>4</div>
+          <div>
+            <div class="mb-1 font-semibold">Categories</div>
+            <div>
+              <x-radio-group name="category" :options="\App\Models\Job::$categories" />
+            </div>
+          </div>
         </div>
 
         <button type="submit" class="w-full">Filter</button>
